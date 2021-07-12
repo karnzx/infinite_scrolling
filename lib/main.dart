@@ -3,7 +3,7 @@ import 'package:infinite_scrolling/starwars_list.dart';
 import 'dart:developer';
 
 void main() {
-  runApp(MyApp());
+  runApp(StarwarsList());
 }
 
 class MyApp extends StatelessWidget {
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Text('hello'),
+      home: MyHomePage(title: 'karn app'),
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:infinite_scrolling/starwars_repo.dart';
 
@@ -24,7 +25,35 @@ class _StarwarsListState extends State<StarwarsList> {
   Future<void> fetchPeople() async {
     var people = await _repo.fetchPeople(page: _page);
     setState(() {
-      _people = List<People>.from(_people);
+      _people = List<People>.from(people);
+      for (var p in _people) {
+        print(p.name);
+      }
     });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        primarySwatch: Colors.red,
+      ),
+      home: Scaffold(
+        appBar: AppBar(
+          title: Text('Infinite Scrolling List App'),
+        ),
+        body: Center(
+          // in the middle of the parent.
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'this is text',
+              ),
+            ],
+          ),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
+    );
   }
 }
