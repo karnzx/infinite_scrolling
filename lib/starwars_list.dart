@@ -26,9 +26,9 @@ class _StarwarsListState extends State<StarwarsList> {
     var people = await _repo.fetchPeople(page: _page);
     setState(() {
       _people = List<People>.from(people);
-      for (var p in _people) {
-        print(p.name);
-      }
+      // for (var p in _people) {
+      //   print(p.name);
+      // }
     });
   }
 
@@ -47,21 +47,24 @@ class _StarwarsListState extends State<StarwarsList> {
         itemCount: _people.length,
         itemBuilder: (context, index) {
           if (index == _people.length) {
+            if (_page + 1 <= 9) {
+              _page += 1;
+            }
             fetchPeople();
+            print('hello');
           }
-          if (index == _people.length) {}
           final People people = _people[index];
+          final int imageNumber = (index + 1) * _page;
           return Card(
             child: Column(
               children: <Widget>[
                 Image.network(
-                  "https://starwars-visualguide.com/assets/img/characters/${1}.jpg",
+                  "https://starwars-visualguide.com/assets/img/characters/${imageNumber}.jpg",
                   fit: BoxFit.fitWidth,
                   width: double.infinity,
-                  height: 160,
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(20),
                   child: Text(people.name,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
