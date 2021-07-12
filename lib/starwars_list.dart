@@ -28,16 +28,23 @@ class _StarwarsListState extends State<StarwarsList> {
   _scrollListener() {
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
-      setState(() {
-        _page += 1;
-      });
-      fetchPeople();
-      print("reach the bottom");
+      if (_repo.next != null) {
+        setState(() {
+          _page += 1;
+        });
+        fetchPeople();
+        print("reach the bottom");
+      }
     }
     if (_controller.offset <= _controller.position.minScrollExtent &&
         !_controller.position.outOfRange) {
-      fetchPeople();
-      print("reach the top");
+      if (_repo.prev != null) {
+        setState(() {
+          _page -= 1;
+        });
+        fetchPeople();
+        print("reach the top");
+      }
     }
   }
 
@@ -45,9 +52,6 @@ class _StarwarsListState extends State<StarwarsList> {
     var people = await _repo.fetchPeople(page: _page);
     setState(() {
       _people = List<People>.from(people);
-      // for (var p in _people) {
-      //   print(p.name);
-      // }
     });
   }
 
