@@ -34,26 +34,41 @@ class _StarwarsListState extends State<StarwarsList> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.red,
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Infinite Scrolling List App'),
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Infinite Scrolling List App'),
-        ),
-        body: Center(
-          // in the middle of the parent.
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'this is text',
-              ),
-            ],
-          ),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
-      ),
+      body: getBody(),
     );
+  }
+
+  Widget getBody() {
+    return ListView.builder(
+        itemCount: _people.length,
+        itemBuilder: (context, index) {
+          if (index == _people.length) {
+            fetchPeople();
+          }
+          if (index == _people.length) {}
+          final People people = _people[index];
+          return Card(
+            child: Column(
+              children: <Widget>[
+                Image.network(
+                  "https://starwars-visualguide.com/assets/img/characters/${1}.jpg",
+                  fit: BoxFit.fitWidth,
+                  width: double.infinity,
+                  height: 160,
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Text(people.name,
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                ),
+              ],
+            ),
+          );
+        });
   }
 }
