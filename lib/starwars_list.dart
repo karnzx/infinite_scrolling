@@ -84,18 +84,58 @@ class _StarwarsListState extends State<StarwarsList> {
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     children: [
-                      Text('name : ${people.name}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      Text('height : ${people.height}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      Text('gender : ${people.gender}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16)),
-                      Text('bith year : ${people.birth_year}',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16))
+                      Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'name : ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                            TextSpan(
+                                text: '${people.name}',
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'gender : ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                            TextSpan(
+                                text: '${people.gender}',
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'height : ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                            TextSpan(
+                                text: '${people.height}',
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
+                      Text.rich(
+                        TextSpan(
+                          children: <TextSpan>[
+                            TextSpan(
+                                text: 'bith year : ',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 16)),
+                            TextSpan(
+                                text: '${people.birth_year}',
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ),
                     ],
                   ),
                 )
