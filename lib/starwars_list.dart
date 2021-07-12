@@ -8,6 +8,7 @@ class StarwarsList extends StatefulWidget {
 }
 
 class _StarwarsListState extends State<StarwarsList> {
+  late ScrollController _controller;
   final StarwarsRepo _repo;
   late List<People> _people;
   late int _page;
@@ -17,9 +18,27 @@ class _StarwarsListState extends State<StarwarsList> {
   @override
   void initState() {
     super.initState();
+    _controller = ScrollController();
+    _controller.addListener(_scrollListener);
     _page = 1;
     _people = [];
     fetchPeople();
+  }
+
+  _scrollListener() {
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
+        !_controller.position.outOfRange) {
+      setState(() {
+        _page += 1;
+      });
+      fetchPeople();
+      print("reach the bottom");
+    }
+    if (_controller.offset <= _controller.position.minScrollExtent &&
+        !_controller.position.outOfRange) {
+      fetchPeople();
+      print("reach the top");
+    }
   }
 
   Future<void> fetchPeople() async {
@@ -44,15 +63,9 @@ class _StarwarsListState extends State<StarwarsList> {
 
   Widget getBody() {
     return ListView.builder(
+        controller: _controller,
         itemCount: _people.length,
         itemBuilder: (context, index) {
-          if (index == _people.length) {
-            if (_page + 1 <= 9) {
-              _page += 1;
-            }
-            fetchPeople();
-            print('hello');
-          }
           final People people = _people[index];
           final int imageNumber = (index + 1) * _page;
           return Card(
