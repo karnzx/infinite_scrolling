@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:infinite_scrolling/starwars_repo.dart';
+import 'package:infinite_scrolling/starwars_list.dart';
 import 'dart:developer';
 
 void main() {
@@ -10,7 +10,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    print(StarwarsRepo().fetchPeople());
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
