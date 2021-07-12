@@ -2,10 +2,15 @@ import 'package:dio/dio.dart';
 
 class People {
   final String name;
-  People(this.name);
+  final String height;
+  final String birth_year;
+  final String gender;
+
+  People(this.name, this.height, this.birth_year, this.gender);
 
   factory People.fromJson(dynamic data) {
-    return People(data['name']);
+    return People(
+        data['name'], data['height'], data['birth_year'], data['gender']);
   }
 }
 
@@ -17,7 +22,7 @@ class StarwarsRepo {
     List<dynamic> results = response.data['results'];
     next = response.data['next'];
     prev = response.data['previous'];
-    print('$next , $prev');
+    // print('$next , $prev');
     return results.map((it) => People.fromJson(it)).toList();
   }
 }

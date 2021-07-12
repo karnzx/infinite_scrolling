@@ -82,10 +82,23 @@ class _StarwarsListState extends State<StarwarsList> {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Text(people.name,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                ),
+                  child: Column(
+                    children: [
+                      Text('name : ${people.name}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text('height : ${people.height}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text('gender : ${people.gender}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text('bith year : ${people.birth_year}',
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16))
+                    ],
+                  ),
+                )
               ],
             ),
           );
