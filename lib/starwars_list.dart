@@ -9,7 +9,6 @@ class StarwarsList extends StatefulWidget {
 
 class _StarwarsListState extends State<StarwarsList> {
   ScrollController _controller = new ScrollController();
-  final int _nextPageThreshold = 3000;
   final StarwarsRepo _repo;
   late List<People> _people;
   late int _page;
@@ -27,10 +26,9 @@ class _StarwarsListState extends State<StarwarsList> {
   }
 
   _scrollListener() {
-    // print(_controller.offset + _nextPageThreshold);
+    // print(_controller.offset);
     // print('>> ${_controller.position.maxScrollExtent}');
-    if ((_controller.offset + _nextPageThreshold) >=
-            _controller.position.maxScrollExtent &&
+    if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
       if (_repo.next != null && _loading == false) {
         setState(() {
@@ -82,13 +80,29 @@ class _StarwarsListState extends State<StarwarsList> {
                 children: <Widget>[
                   Image.network(
                     "https://starwars-visualguide.com/assets/img/characters/${imageNumber}.jpg",
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return const Text(
-                          'Image not found || Something wrong with image');
-                    },
                     fit: BoxFit.fitWidth,
                     width: double.infinity,
+                    loadingBuilder: (BuildContext context, Widget child,
+                        ImageChunkEvent? loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return Center(
+                          child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes as num)
+                            : null,
+                      ));
+                    },
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return Column(
+                        children: [
+                          Icon(Icons.error, color: Colors.blue, size: 36.0),
+                          Text('Image not found',
+                              style: TextStyle(fontSize: 20))
+                        ],
+                      );
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20),
@@ -110,13 +124,15 @@ class _StarwarsListState extends State<StarwarsList> {
   }
 
   Widget textDetail({String title = "", String text = ""}) {
+    final double textSize = 20;
     return Text.rich(
       TextSpan(
         children: <TextSpan>[
           TextSpan(
               text: '$title : ',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          TextSpan(text: text, style: TextStyle(fontSize: 16)),
+              style:
+                  TextStyle(fontWeight: FontWeight.bold, fontSize: textSize)),
+          TextSpan(text: text, style: TextStyle(fontSize: textSize)),
         ],
       ),
     );
