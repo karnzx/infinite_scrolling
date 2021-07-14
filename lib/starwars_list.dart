@@ -111,39 +111,53 @@ class _StarwarsListState extends State<StarwarsList> {
             final int imageNumber = (index + 1);
 
             return Card(
+              elevation: 10,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(40.0),
+              ),
+              margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
               child: Column(
                 children: <Widget>[
-                  Image.network(
-                    "https://starwars-visualguide.com/assets/img/characters/${imageNumber}.jpg",
-                    fit: BoxFit.fitWidth,
-                    width: double.infinity,
-                    loadingBuilder: (BuildContext context, Widget child,
-                        ImageChunkEvent? loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return Center(
-                          child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                (loadingProgress.expectedTotalBytes as num)
-                            : null,
-                      ));
-                    },
-                    errorBuilder: (BuildContext context, Object exception,
-                        StackTrace? stackTrace) {
-                      return Column(
-                        children: [
-                          Icon(Icons.error, color: Colors.blue, size: 36.0),
-                          Text('Image not found',
-                              style: TextStyle(fontSize: 20))
-                        ],
-                      );
-                    },
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: textDetail(title: "name", text: people.name),
+                  ),
+                  Container(
+                    margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(20),
+                      child: Image.network(
+                        "https://starwars-visualguide.com/assets/img/characters/${imageNumber}.jpg",
+                        fit: BoxFit.fitWidth,
+                        width: double.infinity,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent? loadingProgress) {
+                          if (loadingProgress == null) return child;
+                          return Center(
+                              child: CircularProgressIndicator(
+                            value: loadingProgress.expectedTotalBytes != null
+                                ? loadingProgress.cumulativeBytesLoaded /
+                                    (loadingProgress.expectedTotalBytes as num)
+                                : null,
+                          ));
+                        },
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Column(
+                            children: [
+                              Icon(Icons.error, color: Colors.blue, size: 36.0),
+                              Text('Image not found',
+                                  style: TextStyle(fontSize: 20))
+                            ],
+                          );
+                        },
+                      ),
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        textDetail(title: "name", text: people.name),
                         textDetail(title: "gender", text: people.gender),
                         textDetail(title: "height", text: people.height),
                         textDetail(title: "bith year", text: people.birth_year),
