@@ -30,7 +30,7 @@ class _StarwarsListState extends State<StarwarsList> {
     // print('>> ${_controller.position.maxScrollExtent}');
     if (_controller.offset >= _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
-      if (_repo.next != null && _loading == false) {
+      if (_repo.next != null) {
         setState(() {
           _page += 1;
           _loading = true;
@@ -52,21 +52,37 @@ class _StarwarsListState extends State<StarwarsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Infinite Scrolling List App'),
-        ),
-        body: getBody(),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.orange,
-          onPressed: () {
-            _controller.animateTo(_controller.position.maxScrollExtent,
-                duration: Duration(seconds: 3), curve: Curves.easeInOut);
-          },
+      appBar: AppBar(
+        title: Text('Infinite Scrolling List App'),
+      ),
+      body: getBody(),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.orange,
+        onPressed: () {
+          _controller.animateTo(_controller.position.maxScrollExtent,
+              duration: Duration(seconds: 3), curve: Curves.easeInOut);
+        },
+        child: Container(
+          height: 70,
+          width: 70,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.white, width: 3),
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [
+                Color.fromRGBO(248, 176, 144, 1.0),
+                Color.fromRGBO(255, 128, 144, 1.0),
+                Color.fromRGBO(255, 111, 96, 1.0),
+              ],
+            ),
+          ),
           child: Icon(
             Icons.arrow_downward_sharp,
-            size: 30.0,
+            size: 40.0,
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget getBody() {
@@ -74,17 +90,26 @@ class _StarwarsListState extends State<StarwarsList> {
       if (_loading) {
         return Center(
             child: Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(20),
           child: CircularProgressIndicator(),
         ));
       }
     } else {
       return ListView.builder(
           controller: _controller,
-          itemCount: _people.length,
+          itemCount: _people.length + (_repo.next != null ? 1 : 0),
           itemBuilder: (context, index) {
+            if (index == _people.length) {
+              return Center(
+                  child: Padding(
+                padding: const EdgeInsets.all(20),
+                child: CircularProgressIndicator(),
+              ));
+            }
+
             final People people = _people[index];
             final int imageNumber = (index + 1);
+
             return Card(
               child: Column(
                 children: <Widget>[
