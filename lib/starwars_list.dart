@@ -98,62 +98,10 @@ class _StarwarsListState extends State<StarwarsList> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       children: [
-                        Text.rich(
-                          TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'name : ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                              TextSpan(
-                                  text: '${people.name}',
-                                  style: TextStyle(fontSize: 16)),
-                            ],
-                          ),
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'gender : ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                              TextSpan(
-                                  text: '${people.gender}',
-                                  style: TextStyle(fontSize: 16)),
-                            ],
-                          ),
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'height : ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                              TextSpan(
-                                  text: '${people.height}',
-                                  style: TextStyle(fontSize: 16)),
-                            ],
-                          ),
-                        ),
-                        Text.rich(
-                          TextSpan(
-                            children: <TextSpan>[
-                              TextSpan(
-                                  text: 'bith year : ',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                              TextSpan(
-                                  text: '${people.birth_year}',
-                                  style: TextStyle(fontSize: 16)),
-                            ],
-                          ),
-                        ),
+                        textDetail(title: "name", text: people.name),
+                        textDetail(title: "gender", text: people.gender),
+                        textDetail(title: "height", text: people.height),
+                        textDetail(title: "bith year", text: people.birth_year),
                       ],
                     ),
                   )
@@ -163,5 +111,18 @@ class _StarwarsListState extends State<StarwarsList> {
           });
     }
     return Container();
+  }
+
+  Widget textDetail({String title = "", String text = ""}) {
+    return Text.rich(
+      TextSpan(
+        children: <TextSpan>[
+          TextSpan(
+              text: '$title : ',
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+          TextSpan(text: text, style: TextStyle(fontSize: 16)),
+        ],
+      ),
+    );
   }
 }
