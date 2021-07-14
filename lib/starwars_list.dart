@@ -8,7 +8,8 @@ class StarwarsList extends StatefulWidget {
 }
 
 class _StarwarsListState extends State<StarwarsList> {
-  ScrollController _controller = new ScrollController(initialScrollOffset: 5.0);
+  ScrollController _controller = new ScrollController();
+  final int _nextPageThreshold = 3000;
   final StarwarsRepo _repo;
   late List<People> _people;
   late int _page;
@@ -26,26 +27,19 @@ class _StarwarsListState extends State<StarwarsList> {
   }
 
   _scrollListener() {
-    if (_controller.offset >= _controller.position.maxScrollExtent &&
+    // print(_controller.offset + _nextPageThreshold);
+    // print('>> ${_controller.position.maxScrollExtent}');
+    if ((_controller.offset + _nextPageThreshold) >=
+            _controller.position.maxScrollExtent &&
         !_controller.position.outOfRange) {
       if (_repo.next != null && _loading == false) {
-        _loading = true;
         setState(() {
           _page += 1;
+          _loading = true;
         });
         fetchPeople();
-        print("reach the bottom");
+        print("page $_page, next ${_repo.next}");
       }
-    }
-    if (_controller.offset <= _controller.position.minScrollExtent &&
-        !_controller.position.outOfRange) {
-      // if (_repo.prev != null) {
-      //   setState(() {
-      //     _page -= 1;
-      //   });
-      //   fetchPeople();
-      //   print("reach the top");
-      // }
     }
   }
 
@@ -53,6 +47,7 @@ class _StarwarsListState extends State<StarwarsList> {
     var people = await _repo.fetchPeople(page: _page);
     setState(() {
       _people.addAll(List<People>.from(people));
+      _loading = false;
     });
   }
 
@@ -85,15 +80,16 @@ class _StarwarsListState extends State<StarwarsList> {
             return Card(
               child: Column(
                 children: <Widget>[
-                  // Image.network(
-                  //   "https://starwars-visualguide.com/assets/img/characters/${imageNumber}.jpg",
-                  //   errorBuilder: (BuildContext context, Object exception,
-                  //       StackTrace? stackTrace) {
-                  //     return const Text('Your error widget...');
-                  //   },
-                  //   fit: BoxFit.fitWidth,
-                  //   width: double.infinity,
-                  // ),
+                  Image.network(
+                    "https://starwars-visualguide.com/assets/img/characters/${imageNumber}.jpg",
+                    errorBuilder: (BuildContext context, Object exception,
+                        StackTrace? stackTrace) {
+                      return const Text(
+                          'Image not found || Something wrong with image');
+                    },
+                    fit: BoxFit.fitWidth,
+                    width: double.infinity,
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
