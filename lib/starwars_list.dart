@@ -52,11 +52,21 @@ class _StarwarsListState extends State<StarwarsList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Infinite Scrolling List App'),
-      ),
-      body: getBody(),
-    );
+        appBar: AppBar(
+          title: Text('Infinite Scrolling List App'),
+        ),
+        body: getBody(),
+        floatingActionButton: FloatingActionButton(
+          backgroundColor: Colors.orange,
+          onPressed: () {
+            _controller.animateTo(_controller.position.maxScrollExtent,
+                duration: Duration(seconds: 3), curve: Curves.easeInOut);
+          },
+          child: Icon(
+            Icons.arrow_downward_sharp,
+            size: 30.0,
+          ),
+        ));
   }
 
   Widget getBody() {
