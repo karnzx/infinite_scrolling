@@ -111,7 +111,14 @@ class _StarwarsListState extends State<StarwarsList> {
             final int imageNumber = (index + 1);
 
             return GestureDetector(
-              onTap: () {},
+              onTap: () async {
+                var planet = await _repo.fetchPlanet(url: people.homeWorld);
+                print(planet);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PlanetPage(planet)));
+              },
               child: Card(
                 elevation: 10,
                 shape: RoundedRectangleBorder(
@@ -179,19 +186,66 @@ class _StarwarsListState extends State<StarwarsList> {
       },
     );
   }
+}
 
-  Widget textDetail({String title = "", String text = ""}) {
-    final double textSize = 20;
-    return Text.rich(
-      TextSpan(
-        children: <TextSpan>[
-          TextSpan(
-              text: '$title : ',
-              style:
-                  TextStyle(fontWeight: FontWeight.bold, fontSize: textSize)),
-          TextSpan(text: text, style: TextStyle(fontSize: textSize)),
-        ],
-      ),
-    );
+Widget textDetail({String title = "", String text = ""}) {
+  final double textSize = 20;
+  return Text.rich(
+    TextSpan(
+      children: <TextSpan>[
+        TextSpan(
+            text: '$title : ',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: textSize)),
+        TextSpan(text: text, style: TextStyle(fontSize: textSize)),
+      ],
+    ),
+  );
+}
+
+class PlanetPage extends StatefulWidget {
+  final Planet? _planet;
+
+  PlanetPage(this._planet, {Key? key}) : super(key: key);
+
+  @override
+  _PlanetPageState createState() => _PlanetPageState(_planet);
+}
+
+class _PlanetPageState extends State<PlanetPage> {
+  final Planet? _planet;
+
+  _PlanetPageState(this._planet);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        appBar: AppBar(
+          title: Text(_planet?.name ?? 'NOT Found'),
+        ),
+        body: Card(
+            elevation: 10,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40.0),
+            ),
+            margin: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+            child: (_planet == null)
+                ? Text('text')
+                : Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: <Widget>[
+                          textDetail(title: 'Name', text: _planet!.name),
+                          textDetail(
+                              title: 'Rotation Period',
+                              text: _planet!.rotationPeriod),
+                          textDetail(title: 'Terrain', text: _planet!.terrain),
+                          textDetail(
+                              title: 'Surface Water',
+                              text: _planet!.surfaceWater),
+                          textDetail(
+                              title: 'Population', text: _planet!.population),
+                        ]),
+                  )));
   }
 }

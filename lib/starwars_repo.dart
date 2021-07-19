@@ -18,7 +18,7 @@ class People {
 class Planet {
   final String name;
   final String rotationPeriod;
-  final List<String> terrain;
+  final String terrain;
   final String surfaceWater;
   final String population;
 
@@ -43,10 +43,10 @@ class StarwarsRepo {
     return results.map((it) => People.fromJson(it)).toList();
   }
 
-  Future<List<Planet>> fetchPlanet(
+  Future<Planet> fetchPlanet(
       {String url = 'https://swapi.dev/api/planets/1/'}) async {
     var response = await Dio().get(url);
-    List<dynamic> results = response.data;
-    return results.map((it) => Planet.fromJson(it)).toList();
+    var results = response.data;
+    return Planet.fromJson(results);
   }
 }
