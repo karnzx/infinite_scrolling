@@ -3,14 +3,31 @@ import 'package:dio/dio.dart';
 class People {
   final String name;
   final String height;
-  final String birth_year;
+  final String birthYear;
   final String gender;
+  final String homeWorld;
 
-  People(this.name, this.height, this.birth_year, this.gender);
+  People(this.name, this.height, this.birthYear, this.gender, this.homeWorld);
 
   factory People.fromJson(dynamic data) {
-    return People(
-        data['name'], data['height'], data['birth_year'], data['gender']);
+    return People(data['name'], data['height'], data['birth_year'],
+        data['gender'], data['homeworld']);
+  }
+}
+
+class Planet {
+  final String name;
+  final String rotationPeriod;
+  final List<String> terrain;
+  final String surfaceWater;
+  final String population;
+
+  Planet(this.name, this.rotationPeriod, this.terrain, this.surfaceWater,
+      this.population);
+
+  factory Planet.fromJson(dynamic data) {
+    return Planet(data['name'], data['rotation_period'], data['terrain'],
+        data['surface_water'], data['population']);
   }
 }
 
@@ -24,5 +41,12 @@ class StarwarsRepo {
     prev = response.data['previous'];
     // print('$next , $prev');
     return results.map((it) => People.fromJson(it)).toList();
+  }
+
+  Future<List<Planet>> fetchPlanet(
+      {String url = 'https://swapi.dev/api/planets/1/'}) async {
+    var response = await Dio().get(url);
+    List<dynamic> results = response.data;
+    return results.map((it) => Planet.fromJson(it)).toList();
   }
 }
