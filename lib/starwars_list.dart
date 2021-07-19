@@ -239,7 +239,9 @@ class _PlanetPageState extends State<PlanetPage> {
                           textDetail(
                               title: 'Rotation Period',
                               text: _planet!.rotationPeriod),
-                          textDetail(title: 'Terrain', text: _planet!.terrain),
+                          textDetail(
+                              title: 'Terrain',
+                              text: _planet!.terrain.replaceAll(',', '\n')),
                           textDetail(
                               title: 'Surface Water',
                               text: _planet!.surfaceWater),
